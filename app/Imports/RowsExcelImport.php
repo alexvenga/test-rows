@@ -6,6 +6,7 @@ use App\Models\ExcelRow;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
@@ -62,12 +63,16 @@ class RowsExcelImport implements ToModel,
 
     public function model(array $row): ExcelRow|null
     {
-        return ExcelRow::updateOrCreate([
+        $excelRow = ExcelRow::updateOrCreate([
             'id' => $row['id'],
         ], [
             'name' => $row['name'],
             'date' => Carbon::createFromTimestamp(Date::excelToTimestamp($row['date'])),
         ]);
+
+        cache([$this->getCacheProcessingKey() => $this->getRowNumber()]);
+
+        return $excelRow;
     }
 
     public function headingRow(): int
@@ -82,18 +87,24 @@ class RowsExcelImport implements ToModel,
 
     public function onFailure(Failure ...$failures): void
     {
-        $currentRowNumber = $this->getRowNumber();
-
         foreach ($failures as $failure) {
             Log::channel('excel-files')->warning(
                 sprintf(
                     'File "%s" upload not valid row %d: %s',
                     $this->currentFilePath,
-                    $currentRowNumber,
+                    $this->getRowNumber(),
                     implode(' ', $failure->errors())
                 )
             );
         }
+    }
+
+    protected function getCacheProcessingKey(): string
+    {
+        return sprintf(
+            'upload-excel-processed--%s',
+            str($this->currentFilePath)->slug()->toString()
+        );
     }
 
 }
