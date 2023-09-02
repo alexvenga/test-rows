@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Row;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -14,6 +15,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Validators\Failure;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
@@ -29,7 +31,25 @@ class RowsExcelImport implements ToModel,
 {
 
     use RemembersRowNumber;
-    use Importable;
+    use Importable {
+        Importable::import as public traitImport;
+    }
+
+    protected ?string $currentFilePath = null;
+
+    /**
+     * Override Importable::import for save current file path
+     *
+     * @param $filePath
+     * @param  string|null  $disk
+     * @param  string|null  $readerType
+     * @return Importer|PendingDispatch
+     */
+    public function import($filePath = null, string $disk = null, string $readerType = null): Importer|PendingDispatch
+    {
+        $this->currentFilePath = $filePath;
+        return $this->traitImport($filePath, $disk, $readerType);
+    }
 
     public function rules(): array
     {
@@ -62,13 +82,13 @@ class RowsExcelImport implements ToModel,
 
     public function onFailure(Failure ...$failures): void
     {
-
         $currentRowNumber = $this->getRowNumber();
 
         foreach ($failures as $failure) {
             Log::channel('excel-files')->warning(
                 sprintf(
-                    'File upload not valid row %d: %s',
+                    'File "%s" upload not valid row %d: %s',
+                    $this->currentFilePath,
                     $currentRowNumber,
                     implode(' ', $failure->errors())
                 )
