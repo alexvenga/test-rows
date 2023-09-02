@@ -1,5 +1,10 @@
 <x-app-layout>
     <h1 class="text-3xl font-bold">Upload excel file with rows</h1>
+    @if($message = Session::get('success'))
+        <div class="mt-8 font-bold text-green-700">
+            {{ $message }}
+        </div>
+    @endif
     <form method="post" enctype="multipart/form-data" action="{{ route('rows.store') }}" class="mt-8">
         @csrf
         <label class="block space-y-1">

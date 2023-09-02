@@ -25,6 +25,7 @@ services:
             - mariadb
             - redis
             - soketi
+            - rabbitmq
     mariadb:
         image: 'mariadb:10'
         ports:
@@ -77,6 +78,19 @@ services:
             - '${PUSHER_METRICS_PORT:-9601}:9601'
         networks:
             - sail
+    rabbitmq:
+        image: 'rabbitmq:3.9-management'
+        environment:
+            RABBITMQ_DEFAULT_USER: '${RABBITMQ_LOGIN}'
+            RABBITMQ_DEFAULT_PASS: '${RABBITMQ_PASSWORD}'
+            RABBITMQ_DEFAULT_VHOST: '${RABBITMQ_VHOST}'
+        ports:
+            - '${RABBITMQ_PORT:-5672}:5672'
+            - '${RABBITMQ_UI_PORT:-15672}:15672'
+        networks:
+            - sail
+        volumes:
+            - 'sail-rabbitmq:/var/lib/rabbitmq'
 networks:
     sail:
         driver: bridge
@@ -84,4 +98,6 @@ volumes:
     sail-mariadb:
         driver: local
     sail-redis:
+        driver: local
+    sail-rabbitmq:
         driver: local
