@@ -1,10 +1,5 @@
 <x-app-layout>
     <h1 class="text-3xl font-bold">Uploaded excel rows</h1>
-    @if($message = Session::get('success'))
-        <div class="mt-8 font-bold text-green-700">
-            {{ $message }}
-        </div>
-    @endif
 
     <div x-data="excelRowsTable(@js($excelRows))">
 
