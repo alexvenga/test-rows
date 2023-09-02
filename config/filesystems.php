@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'excel-files' => [
+            'driver' => 'local',
+            'root' => storage_path('app/excel-files'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Rows\ViewRowsController;
+use App\Http\Controllers\Rows\UploadRowsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})
+    ->name('home');
+
+Route::get('/rows', ViewRowsController::class)
+    ->name('rows.index');
+
+Route::get('/rows/create', [UploadRowsController::class, 'create'])
+    ->name('rows.create');
+
+Route::post('/rows', [UploadRowsController::class, 'store'])
+    ->name('rows.store');
