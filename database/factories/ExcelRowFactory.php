@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Row>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExcelRow>
  */
-class RowFactory extends Factory
+class ExcelRowFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class RowFactory extends Factory
     public function definition(): array
     {
         return [
-
+            //
         ];
     }
 }

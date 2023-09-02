@@ -24,3 +24,5 @@ Laravel (Docker, Laravel echo, redis, mariadb)
 ---
 
 ## Мысли по улучшению
+
+Рефракторинг RowsExcelImport

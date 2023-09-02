@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Row;
+use App\Models\ExcelRow;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Carbon;
@@ -60,9 +60,9 @@ class RowsExcelImport implements ToModel,
         ];
     }
 
-    public function model(array $row): Row|null
+    public function model(array $row): ExcelRow|null
     {
-        return Row::updateOrCreate([
+        return ExcelRow::updateOrCreate([
             'id' => $row['id'],
         ], [
             'name' => $row['name'],

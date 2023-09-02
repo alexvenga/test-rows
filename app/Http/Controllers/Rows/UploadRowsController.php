@@ -7,7 +7,6 @@ use App\Http\Requests\Rows\UploadRowsRequest;
 use App\Imports\RowsExcelImport;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -28,8 +27,6 @@ class UploadRowsController extends Controller
         } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
             return redirect()->back()->withErrors(['excel-file' => 'Can`t read Excel file']);
         } catch (\Throwable $e) {
-            dd($e);
-
             Log::channel('excel-files')->error($e->getMessage());
 
             return redirect()->back()->withErrors(['excel-file' => 'Unknown error']);

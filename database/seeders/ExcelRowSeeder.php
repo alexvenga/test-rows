@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class RowSeeder extends Seeder
+class ExcelRowSeeder extends Seeder
 {
     /**
      * Run the database seeds.
