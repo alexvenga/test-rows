@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Http\UploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
 class RowsUploadPageTest extends TestCase
@@ -31,6 +32,8 @@ class RowsUploadPageTest extends TestCase
     public function testUploadExcelFile(): void
     {
 
+        Excel::fake();
+
         $preparation = new UploadedFile(
             public_path('test.xlsx'),
             'test.xlsx',
@@ -43,6 +46,8 @@ class RowsUploadPageTest extends TestCase
             ->post('/rows', [
                 'excel-file' => $preparation
             ]);
+
+        Excel::assertQueued('test.xlsx', config('services.excel-files.disk'));
 
         $response->assertRedirect();
 
