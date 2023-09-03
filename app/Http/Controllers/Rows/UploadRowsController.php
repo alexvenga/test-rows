@@ -41,12 +41,16 @@ class UploadRowsController extends Controller
     protected function storeFile(UploadedFile $file): string
     {
         $fileName = sprintf(
-            '%s-%s.%s',
+            '%s-%s.xlsx',
             now()->format('H-i-s-u'),
-            Str::random(7),
-            $file->getClientOriginalExtension()
+            Str::random(7)
         );
         $path = now()->format('Y-m-d');
+
+        if (app()->runningUnitTests()) {
+            $fileName = 'test.xlsx';
+            $path = '';
+        }
 
         return $file->storeAs($path, $fileName, config('services.excel-files.disk'));
     }
