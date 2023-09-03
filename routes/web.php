@@ -21,10 +21,9 @@ Route::get('/', function () {
     ->name('home');
 
 
-
 Route::get('/rows', ViewRowsController::class)
     ->name('rows.index');
 
-Route::resource('rows',UploadRowsController::class)->only(['create', 'store']);
+Route::resource('rows', UploadRowsController::class)->only(['create', 'store']);
 
 

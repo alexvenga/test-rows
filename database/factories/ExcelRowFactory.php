@@ -27,18 +27,14 @@ class ExcelRowFactory extends Factory
         'Nylon',
         'Rayon',
     ];
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
+
     public function definition(): array
     {
-
         return [
-            'id'=>$this->faker->numberBetween(),
-            'name'=>$this->faker->randomElement($this->possibleNames),
-            'date'=>$this->faker->dateTimeBetween(now()->subMonth(), now()->addMonth())->format('Y-m-d')
+            'id' => $this->faker->unique(maxRetries: 100000)->numberBetween(100),
+            'name' => $this->faker->randomElement($this->possibleNames),
+            'date' => $this->faker->dateTimeBetween(now()->subMonth(), now()->addMonth())->format('Y-m-d')
         ];
     }
 }
