@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Rows;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UploadRowsRequest extends FormRequest
 {
@@ -27,6 +28,8 @@ class UploadRowsRequest extends FormRequest
                 'required',
                 'file',
                 'max:10240',
+                'mimes:xlsx',
+                'mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]
         ];
     }
