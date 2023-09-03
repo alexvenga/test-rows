@@ -40,8 +40,9 @@ Laravel (Docker, Laravel echo, redis, mariadb)
 1. Выполнить миграции ```sail artisan migrate --env=testing```
 2. Запустить тесты ```sail test```
 
+_Реальные тесты пишу впервые)_
+
 ---
 
 ## Мысли по улучшению
 
-Рефракторинг _RowsExcelImport_
