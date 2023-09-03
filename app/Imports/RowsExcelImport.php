@@ -6,9 +6,9 @@ use App\Models\ExcelRow;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -30,7 +30,6 @@ class RowsExcelImport implements ToModel,
                                  ShouldQueue
 {
 
-    use RemembersRowNumber;
     use Importable {
         Importable::import as public traitImport;
     }
@@ -53,6 +52,13 @@ class RowsExcelImport implements ToModel,
 
     public function rules(): array
     {
+
+        if (!Cache::has($this->getCacheProcessingKey())) {
+            Cache::put($this->getCacheProcessingKey(), 1, now()->addHour());
+        }
+
+        Cache::increment($this->getCacheProcessingKey());
+
         return [
             'id' => 'required|int|min:1',
             'name' => 'required|string|min:1',
@@ -68,8 +74,6 @@ class RowsExcelImport implements ToModel,
             'name' => $row['name'],
             'date' => Carbon::createFromTimestamp(Date::excelToTimestamp($row['date'])),
         ]);
-
-        cache([$this->getCacheProcessingKey() => $this->getRowNumber()]);
 
         return $excelRow;
     }
@@ -91,7 +95,7 @@ class RowsExcelImport implements ToModel,
                 sprintf(
                     'File "%s" upload not valid row %d: %s',
                     $this->currentFilePath,
-                    $this->getRowNumber(),
+                    Cache::get($this->getCacheProcessingKey(), 0) + 1,
                     implode(' ', $failure->errors())
                 )
             );

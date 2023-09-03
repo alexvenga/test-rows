@@ -22,10 +22,19 @@ Laravel (Docker, Laravel echo, redis, mariadb)
 ## Установка
 
 1. Клонировать проект
-2. Скопировать .env.example в .env, при необходиемости внести изменения (все настройки для текущего контейнера уже внесены)
+2. Выполните установку зависимостей ```docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/opt -w /opt laravelsail/php82-composer:latest composer install --ignore-platform-reqs```
+3. Скопировать .env.example в .env, при необходиемости внести изменения (все настройки для текущего контейнера для запуска на MacOS уже внесены)
+4. Подключить алиас для ```sail``` [Документация](https://laravel.com/docs/10.x/sail#configuring-a-shell-alias)
+5. Запустить docker-compose командой ```sail up -d```
+6. Установить frontend-зависимости ```sail npm i --save-dev```
+7. Собрать frontend ```sail npm run build```
+8. Сгенерировать ключь продукта ```sail artisan key:generate```
+9. Запустить миграции ```sail artisan migrate```
+10. Запустить выполнение заданий в очереди ```sail artisan queue:work``` усли запустить ```queue:listen``` будет работать медленнее и нагляднее
+11. Открыть адрес [localhost](http://localhost)
 
 ---
 
 ## Мысли по улучшению
 
-Рефракторинг RowsExcelImport
+Рефракторинг _RowsExcelImport_
