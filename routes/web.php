@@ -20,11 +20,11 @@ Route::get('/', function () {
 })
     ->name('home');
 
+
+
 Route::get('/rows', ViewRowsController::class)
     ->name('rows.index');
 
-Route::get('/rows/create', [UploadRowsController::class, 'create'])
-    ->name('rows.create');
+Route::resource('rows',UploadRowsController::class)->only(['create', 'store']);
 
-Route::post('/rows', [UploadRowsController::class, 'store'])
-    ->name('rows.store');
+

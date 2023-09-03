@@ -9,6 +9,24 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ExcelRowFactory extends Factory
 {
+
+    protected array $possibleNames = [
+        'Fabric',
+        'Cotton',
+        'Wool',
+        'Silk',
+        'Linen',
+        'Satin',
+        'Velvet',
+        'Chiffon',
+        'Tulle',
+        'Lace',
+        'Denim',
+        'Leather',
+        'Polyester',
+        'Nylon',
+        'Rayon',
+    ];
     /**
      * Define the model's default state.
      *
@@ -16,8 +34,11 @@ class ExcelRowFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            //
+            'id'=>$this->faker->numberBetween(),
+            'name'=>$this->faker->randomElement($this->possibleNames),
+            'date'=>$this->faker->dateTimeBetween(now()->subMonth(), now()->addMonth())->format('Y-m-d')
         ];
     }
 }

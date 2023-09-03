@@ -35,6 +35,12 @@ Laravel (Docker, Laravel echo, redis, mariadb)
 
 ---
 
+## Тестирование
+
+1. Выполнить миграции ```sail artisan migrate --env=testing```
+
+---
+
 ## Мысли по улучшению
 
 Рефракторинг _RowsExcelImport_
