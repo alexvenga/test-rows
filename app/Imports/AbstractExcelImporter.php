@@ -15,8 +15,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\Failure;
 
-abstract class AbstractExcelImporter implements WithCalculatedFormulas, SkipsEmptyRows, SkipsOnFailure, WithChunkReading,
-                                                WithHeadingRow, ShouldQueue, ToModel,
+abstract class AbstractExcelImporter implements ToModel, WithCalculatedFormulas, SkipsEmptyRows, SkipsOnFailure, WithChunkReading,
+                                                WithHeadingRow, ShouldQueue,
                                                 WithValidation
 {
 
