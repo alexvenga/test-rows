@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Imports\RowsExcelImport;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
@@ -35,7 +36,7 @@ class RowsUploadPageTest extends TestCase
         Excel::fake();
 
         $preparation = new UploadedFile(
-            public_path('test.xlsx'),
+            base_path('/tests/resources/test.xlsx'),
             'test.xlsx',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             null,
@@ -47,7 +48,7 @@ class RowsUploadPageTest extends TestCase
                 'excel-file' => $preparation
             ]);
 
-        Excel::assertQueued('test.xlsx', config('services.excel-files.disk'));
+        Excel::assertQueued('test.xlsx', config('services.excel-resources.disk'), fn(RowsExcelImport $rowsExcelImport) => true);
 
         $response->assertRedirect();
 
