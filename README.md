@@ -42,7 +42,3 @@ Laravel (Docker, Laravel echo, redis, mariadb)
 
 _Реальные тесты пишу впервые)_
 
----
-
-## Мысли по улучшению
-
